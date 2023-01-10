@@ -15,7 +15,7 @@
 </head>
 
  <body>
-    <div class= "container">
+    <div class= "container-margin">
     <!-- 1st Row -->
     <div class="row" >
         <div class="col-sm-12">
