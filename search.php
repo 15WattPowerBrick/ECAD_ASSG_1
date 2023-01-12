@@ -62,10 +62,10 @@ include("header.php"); // Include the Page Layout header
                         <div class="card h-100">
                             <!-- Product image-->
                             <div >';
-                            if ($isOffered == 1) {
-                                echo '<div class="badge bg-dark text-white position-absolute" style="top: 0.5rem; right: 0.5rem">Sale</div>';
-                            }
-                            echo '
+                if ($isOffered == 1) {
+                    echo '<div class="badge bg-dark text-white position-absolute" style="top: 0.5rem; right: 0.5rem">Sale</div>';
+                }
+                echo '
                             <img class="card-img-top" src="' . $img . '" alt="...">
                             </div>
                             <!-- Product details-->
@@ -75,23 +75,17 @@ include("header.php"); // Include the Page Layout header
                                     
                                     <h5 class="fw-bolder"><a href="' . $product . '">' . $row["ProductTitle"] . '</a></h5>
                                     <!-- Product price-->';
-                                    if ($isOffered == 1) {
-                                        echo '<span><del>$' . $formattedPrice . '</del></span>
+                if ($isOffered == 1) {
+                    echo '<span><del>$' . $formattedPrice . '</del></span>
                                                 <span style="font-weight:bold; color:red;">$' . $formattedOfferedPrice . '</span>';
-                                    } else {
-                                        echo '<span style="font-weight:bold; ">$' . $formattedPrice . '</span>';
-                                    }
-                                    echo '
+                } else {
+                    echo '<span style="font-weight:bold; ">$' . $formattedPrice . '</span>';
+                }
+                echo '
                                 </div>
                             </div>
                         </div>
                     </div>';
-
-
-
-
-
-                //echo "<a href='/productDetails.php?pid=$row[ProductID]'>$row[ProductTitle]</a>  <br/> " ;
             }
             echo ' </div>
             </div>
