@@ -46,7 +46,7 @@ include("header.php"); // Include the Page Layout header
         <div class="row gx-4 gx-lg-5 align-items-center">
             <div class="col-md-6">';
         if ($isOffered == 1) {
-            echo '<div class="badge bg-dark text-white position-absolute" style="top: 0.5rem; right: 0.5rem">Sale</div>';
+            echo '<h3><div class="badge bg-danger text-white position-absolute" style="top: 0.5rem; right: 0.5rem">Sale</div></h3>';
         }
         echo '
                 <img class="card-img-top mb-5 mb-md-0" src="' . $img . '" alt="...">

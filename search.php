@@ -12,37 +12,114 @@ include("header.php"); // Include the Page Layout header
             </div>
         </div> <!-- End of 1st row -->
         <div class="form-group row"> <!-- 2nd row -->
-            <label for="keywords" class="col-sm-3 col-form-label">Product Title:</label>
             <div class="col-sm-6">
-                <input class="form-control" name="keywords" id="keywords" type="search" />
+                <input class="form-control" name="keywords" id="keywords" type="search" placeholder="Product"
+                value="<?php echo !empty($_GET["keywords"]) ? $_GET["keywords"] : ""; ?>" />
             </div>
             <div class="col-sm-3">
                 <button type="submit" class="btn btn-primary">Search</button>
             </div>
         </div> <!-- End of 2nd row -->
+
+        <div class="form-group row"> <!-- 3rd row -->
+            <div class="col-sm-3">
+                <input type="radio" name="on_offer" id="on_offer" 
+                <?php echo !empty($_GET["on_offer"]) ? "checked" : ""; ?>>
+                <label for="on_offer">On Offer</label>
+            </div>
+            <div class="col-sm-3">
+                <input type="radio" name="not_offer" id="not_offer"
+                <?php echo !empty($_GET["not_offer"]) ? "checked" : ""; ?>>
+                <label for="not_offer">Not Offer</label>
+            </div>
+        </div> <!-- End of 3rd row -->
+
+        <div class="form-group row"> <!-- 4th row -->
+            <div class="col-sm-3">
+                <input class="form-control" name="min_price" id="min_price" type="number" placeholder="Min. Price"
+                value="<?php echo !empty($_GET["min_price"]) ? $_GET["min_price"] : ""; ?>"/>
+            </div>
+            <div class="col-sm-3">
+                <input class="form-control" name="max_price" id="max_price" type="number" placeholder="Max. Price" 
+                value="<?php echo !empty($_GET["max_price"]) ? $_GET["max_price"] : ""; ?>"/>
+            </div>
+        </div> <!-- End of 4th row -->
     </form>
 
+    <hr>
+
     <?php
+
+
     // The non-empty search keyword is sent to server
-    if (isset($_GET["keywords"]) && trim($_GET['keywords']) != "") {
+    if ((isset($_GET["keywords"]) && trim($_GET['keywords']) != "") || !empty($_GET["on_offer"]) || !empty($_GET["not_offer"])|| !empty($_GET["min_price"]) || !empty($_GET["max_price"])) {
+
+        $qry = "SELECT * FROM product WHERE";
+
+            $today = date("Y-m-d");
+            $criteria = 0;
+
+
+            if (!empty($_GET["keywords"])) {
+                $keywords = $_GET["keywords"];
+                $qry .= "  (ProductTitle LIKE '%$keywords%' OR ProductDesc LIKE '%$keywords%')";
+                $criteria = 1;
+            }
+            if (!empty($_GET["on_offer"])) {
+                $today = date("Y-m-d");
+                if ($criteria == 1) {
+                    $qry .= " AND ";
+                }
+                $qry .= "  Offered = 1 AND '$today' >= OfferStartDate AND '$today' <= OfferEndDate";
+                $criteria = 1;
+            }
+            if (!empty($_GET["not_offer"])) {
+                if ($criteria == 1) {
+                    $qry .= " AND ";
+                }
+                $qry .= "  Offered = 0";
+                $criteria = 1;
+            }
+            if (!empty($_GET["min_price"])) {
+                //$qry .= " AND Price >= ".$_GET["min_price"]."";
+                if ($criteria == 1) {
+                    $qry .= " AND ";
+                }
+                $qry .= "  (CASE WHEN Offered = 1 AND '$today' >= OfferStartDate AND '$today' <= OfferEndDate THEN OfferedPrice ELSE Price END) >= " . $_GET["min_price"] . "";
+                $criteria = 1;
+            }
+            if (!empty($_GET["max_price"])) {
+                //$qry .= " AND Price <= ".$_GET["max_price"]."";
+                if ($criteria == 1) {
+                    $qry .= " AND ";
+                }
+                $qry .= "  (CASE WHEN Offered = 1 AND '$today' >= OfferStartDate AND '$today' <= OfferEndDate THEN OfferedPrice ELSE Price END) <= " . $_GET["max_price"] . "";
+                $criteria = 1;
+            }
+            $qry .= " ORDER BY ProductTitle";
+        
+        
+
+        echo $qry;
+
         // To Do (DIY): Retrieve list of product records with "ProductTitle" 
         // contains the keyword entered by shopper, and display them in a table.
         $SearchText = "%" . $_GET["keywords"] . "%";
         $keyword = $_GET["keywords"];
         // Include the PHP file that establishes database connection handle: $conn
         include_once("mysql_conn.php");
-        $qry = "SELECT * FROM product WHERE 
-    ProductTitle LIKE '%$SearchText%' OR ProductDesc LIKE '%$SearchText%' ORDER BY ProductTitle";
+        //     $qry = "SELECT * FROM product WHERE 
+        // ProductTitle LIKE '%$SearchText%' OR ProductDesc LIKE '%$SearchText%' ORDER BY ProductTitle";
         $result = $conn->query($qry);
 
         if ($result->num_rows > 0) { // If found, display records
-            echo '<header class="bg-dark py-5">
-            <div class="container px-4 px-lg-5 my-5">
-                <div class="text-center text-white">
-                    <h1 class="display-4 fw-bolder">Results for: "' . $keyword . '"</h1>
-                </div>
-            </div>
-        </header>';
+            echo '
+            <div class="card text-white mt-5 py-4 text-center" style="background-color: #c0563d;">
+        <div class="card-body">
+            <h2 class="text-white m-0">Results</h2>
+            <!-- <h2 class="text-white m-0">Results for: "' . $keyword . '"</h2> -->
+        </div>
+    </div>';
             echo ' <section class="py-5">
         <div class="container px-4 px-lg-5 mt-5">
             <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">';
@@ -63,7 +140,7 @@ include("header.php"); // Include the Page Layout header
                             <!-- Product image-->
                             <div >';
                 if ($isOffered == 1) {
-                    echo '<div class="badge bg-dark text-white position-absolute" style="top: 0.5rem; right: 0.5rem">Sale</div>';
+                    echo '<h3><div class="badge bg-danger text-white position-absolute" style="top: 0.5rem; right: 0.5rem">Sale</div></h3>';
                 }
                 echo '
                             <img class="card-img-top" src="' . $img . '" alt="...">
@@ -91,7 +168,13 @@ include("header.php"); // Include the Page Layout header
             </div>
         </section>';
         } else {
-            echo "<b>No Records Found!</b><br/>";
+            echo '
+            <div class="card text-white my-5 py-4 text-center" style="background-color: #c0563d;">
+        <div class="card-body">
+            <h2 class="text-white m-0">No Records Found!</h2>
+            <!-- <h2 class="text-white m-0">No Records Found!</h2> -->
+        </div>
+    </div>';
         }
         $conn->close();
 

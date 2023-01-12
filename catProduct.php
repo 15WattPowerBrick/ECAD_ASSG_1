@@ -54,7 +54,7 @@ WHERE cp.CategoryID=? ORDER BY p.ProductTitle ASC;";
     <!-- Product image-->
     <div >';
 		if ($isOffered == 1) {
-			echo '<div class="badge bg-dark text-white position-absolute" style="top: 0.5rem; right: 0.5rem">Sale</div>';
+			echo '<h3><div class="badge bg-danger text-white position-absolute" style="top: 0.5rem; right: 0.5rem">Sale</div></h3>';
 		}
 		echo '
                             <img class="card-img-top" src="' . $img . '" alt="...">
