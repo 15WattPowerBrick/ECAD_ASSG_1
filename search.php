@@ -22,25 +22,21 @@ include("header.php"); // Include the Page Layout header
         </div> <!-- End of 2nd row -->
 
         <div class="form-group row"> <!-- 3rd row -->
-            <div class="col-sm-3">
-                <input type="radio" name="on_offer" id="on_offer" 
-                <?php echo !empty($_GET["on_offer"]) ? "checked" : ""; ?>>
-                <label for="on_offer">On Offer</label>
-            </div>
-            <div class="col-sm-3">
-                <input type="radio" name="not_offer" id="not_offer"
-                <?php echo !empty($_GET["not_offer"]) ? "checked" : ""; ?>>
-                <label for="not_offer">Not Offer</label>
-            </div>
-        </div> <!-- End of 3rd row -->
+    <div class="col-sm-3">
+        <input type="checkbox" name="on_offer" id="on_offer" value="on_offer" 
+        <?php echo !empty($_GET["on_offer"]) ? "checked" : ""; ?>>
+        <label for="on_offer">On Offer</label>
+    </div>
+</div> <!-- End of 3rd row -->
+
 
         <div class="form-group row"> <!-- 4th row -->
             <div class="col-sm-3">
-                <input class="form-control" name="min_price" id="min_price" type="number" placeholder="Min. Price"
+                <input class="form-control" name="min_price" id="min_price" type="number" min='0' placeholder="Min. Price"
                 value="<?php echo !empty($_GET["min_price"]) ? $_GET["min_price"] : ""; ?>"/>
             </div>
             <div class="col-sm-3">
-                <input class="form-control" name="max_price" id="max_price" type="number" placeholder="Max. Price" 
+                <input class="form-control" name="max_price" id="max_price" type="number" min='0' placeholder="Max. Price" 
                 value="<?php echo !empty($_GET["max_price"]) ? $_GET["max_price"] : ""; ?>"/>
             </div>
         </div> <!-- End of 4th row -->
@@ -52,7 +48,7 @@ include("header.php"); // Include the Page Layout header
 
 
     // The non-empty search keyword is sent to server
-    if ((isset($_GET["keywords"]) && trim($_GET['keywords']) != "") || !empty($_GET["on_offer"]) || !empty($_GET["not_offer"])|| !empty($_GET["min_price"]) || !empty($_GET["max_price"])) {
+    if ((isset($_GET["keywords"]) && trim($_GET['keywords']) != "") || !empty($_GET["on_offer"]) ||  !empty($_GET["min_price"]) || !empty($_GET["max_price"])) {
 
         $qry = "SELECT * FROM product WHERE";
 
@@ -73,13 +69,7 @@ include("header.php"); // Include the Page Layout header
                 $qry .= "  Offered = 1 AND '$today' >= OfferStartDate AND '$today' <= OfferEndDate";
                 $criteria = 1;
             }
-            if (!empty($_GET["not_offer"])) {
-                if ($criteria == 1) {
-                    $qry .= " AND ";
-                }
-                $qry .= "  Offered = 0";
-                $criteria = 1;
-            }
+            
             if (!empty($_GET["min_price"])) {
                 //$qry .= " AND Price >= ".$_GET["min_price"]."";
                 if ($criteria == 1) {
@@ -100,7 +90,7 @@ include("header.php"); // Include the Page Layout header
         
         
 
-        echo $qry;
+        // echo $qry;
 
         // To Do (DIY): Retrieve list of product records with "ProductTitle" 
         // contains the keyword entered by shopper, and display them in a table.
