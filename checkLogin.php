@@ -44,11 +44,17 @@ if ($result->num_rows > 0){
 		exit();
 	}
 	else {
-		echo "Password is wrong!";
+		echo '<script>
+        alert("Password is wrong");
+        window.location = "login.php";
+        </script>';
 	}
 }
 else{
-	echo "Login Failed!";
+	echo '<script>
+        alert("Email does not exist!");
+        window.location = "login.php";
+        </script>';
 }
 
 /*
