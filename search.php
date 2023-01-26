@@ -4,7 +4,7 @@ include("header.php"); // Include the Page Layout header
 ?>
 
 <!-- HTML Form to collect search keyword and submit it to the same page in server -->
-<div style="width:80%; margin:auto;"> <!-- Container -->
+<div style="width:60%; margin:auto;"> <!-- Container -->
     <form name="frmSearch" method="get" action="">
         <div class="form-group row"> <!-- 1st row -->
             <div class="col-sm-9 ">
@@ -12,7 +12,7 @@ include("header.php"); // Include the Page Layout header
             </div>
         </div> <!-- End of 1st row -->
         <div class="form-group row"> <!-- 2nd row -->
-            <div class="col-sm-6">
+            <div class="col-sm-9">
                 <input class="form-control" name="keywords" id="keywords" type="search" placeholder="Product"
                 value="<?php echo !empty($_GET["keywords"]) ? $_GET["keywords"] : ""; ?>" />
             </div>
@@ -22,6 +22,7 @@ include("header.php"); // Include the Page Layout header
         </div> <!-- End of 2nd row -->
 
         <div class="form-group row"> <!-- 3rd row -->
+        
     <div class="col-sm-3">
         <input type="checkbox" name="on_offer" id="on_offer" value="on_offer" 
         <?php echo !empty($_GET["on_offer"]) ? "checked" : ""; ?>>
@@ -31,18 +32,16 @@ include("header.php"); // Include the Page Layout header
 
 
         <div class="form-group row"> <!-- 4th row -->
-            <div class="col-sm-3">
+            <div class="col-sm-4">
                 <input class="form-control" name="min_price" id="min_price" type="number" min='0' placeholder="Min. Price"
                 value="<?php echo !empty($_GET["min_price"]) ? $_GET["min_price"] : ""; ?>"/>
             </div>
-            <div class="col-sm-3">
+            <div class="col-sm-4">
                 <input class="form-control" name="max_price" id="max_price" type="number" min='0' placeholder="Max. Price" 
                 value="<?php echo !empty($_GET["max_price"]) ? $_GET["max_price"] : ""; ?>"/>
             </div>
         </div> <!-- End of 4th row -->
     </form>
-
-    <hr>
 
     <?php
 

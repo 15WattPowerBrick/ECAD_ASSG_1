@@ -16,12 +16,12 @@
 </head>
 
 <body>
-    <div class="container-margin">
+    <div class="container-margin" style="overflow-x: hidden;">
         <!-- 1st Row -->
         <div class="row">
             <div class="col-sm-12">
                 <a href="index.php">
-                    <img src="Images/happybabyheader.png" alt="Logo" class="img-fluid" style="width: 100%" /></a>
+                    <img src="Images/happybabyheader.png" alt="Logo" class="img-fluid" style="display: flex;" /></a>
             </div>
         </div>
 
