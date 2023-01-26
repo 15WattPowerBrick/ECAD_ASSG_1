@@ -15,20 +15,22 @@ include("header.php"); // Include the Page Layout header
             <div class="col-sm-9">
                 <input class="form-control" name="keywords" id="keywords" type="search" placeholder="Product"
                 value="<?php echo !empty($_GET["keywords"]) ? $_GET["keywords"] : ""; ?>" />
-            </div>
-            <div class="col-sm-3">
+            </div> 
+            <!-- <div class="col-sm-3">
                 <button type="submit" class="btn btn-primary">Search</button>
-            </div>
+            </div> -->
         </div> <!-- End of 2nd row -->
 
         <div class="form-group row"> <!-- 3rd row -->
-        
     <div class="col-sm-3">
-        <input type="checkbox" name="on_offer" id="on_offer" value="on_offer" 
-        <?php echo !empty($_GET["on_offer"]) ? "checked" : ""; ?>>
-        <label for="on_offer">On Offer</label>
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" name="on_offer" id="on_offer" value="on_offer" 
+            <?php echo !empty($_GET["on_offer"]) ? "checked" : ""; ?>>
+            <label class="form-check-label" for="on_offer">On Offer</label>
+        </div>
     </div>
 </div> <!-- End of 3rd row -->
+
 
 
         <div class="form-group row"> <!-- 4th row -->
@@ -41,6 +43,13 @@ include("header.php"); // Include the Page Layout header
                 value="<?php echo !empty($_GET["max_price"]) ? $_GET["max_price"] : ""; ?>"/>
             </div>
         </div> <!-- End of 4th row -->
+
+        <div class="form-group row"> <!-- 5th row -->
+            
+            <div class="col-sm-3">
+                <button type="submit" class="btn btn-primary">Search</button>
+            </div>
+        </div> <!-- End of 5th row -->
     </form>
 
     <?php
