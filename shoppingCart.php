@@ -40,7 +40,7 @@ if (isset($_SESSION["Cart"])) {
 		echo "</thead>";
 		// To Do 5 (Practical 5):
 		// Declare an array to store the shopping cart items in session variable 
-			
+		$_SESSION["Items"]=array();
 		// To Do 3 (Practical 4): 
 		// Display the shopping cart content
 		$subTotal = 0; // Declare a variable to compute subtotal before tax
@@ -77,7 +77,10 @@ if (isset($_SESSION["Cart"])) {
 			echo "</form>";
 			// To Do 6 (Practical 5):
 		    // Store the shopping cart items in session variable as an associate array
-				
+			$_SESSION["Items"][] = array("productId"=>$row["ProductID"],
+										"name"=>$row["Name"],
+										"price"=>$row["Price"],
+										"quantity"=>$row["Quantity"]);
 			// Accumulate the running sub-total
 			$subTotal += $row["Total"];
 			
@@ -93,7 +96,10 @@ if (isset($_SESSION["Cart"])) {
 		$_SESSION["SubTotal"] = round($subTotal, 2);
 		// To Do 7 (Practical 5):
 		// Add PayPal Checkout button on the shopping cart page
-				
+			echo "<form method='post' action='checkoutProcess.php'>";
+			echo "<input type='image' style='float:right;'
+					src='https://www.paypal.com/en_US/i/btn/btn_xpressCheckout.gif'>";
+			echo "<form></p>";
 	}
 	else {
 		echo "<h3 style='text-align:center; color:red;'>Empty shopping cart!</h3>";
