@@ -37,7 +37,30 @@ if ($result->num_rows > 0){
 		if ($result->num_rows > 0) {
 			$row2 = $result2->fetch_array();
 			$_SESSION["Cart"] = $row2["ShopCartID"];
-			$_SESSION["NumCartItem"] = $result2->num_rows;
+
+			//Get quantity of items in shopping cart
+			$qry = "SELECT Quantity FROM ShopCartItem Where ShopCartID=?";
+			$stmt = $conn->prepare($qry);
+			$stmt->bind_param("i", $_SESSION["Cart"]);
+			$stmt->execute();
+			$result = $stmt->get_result();
+			$stmt->close();
+			$qtycount = 0;
+			$rows = $result->num_rows;
+			for ($i=0;$i<$rows;$i++) {
+				$row = $result->fetch_assoc();
+				$rowqty = $row['Quantity'];
+				$qtycount = $qtycount + $rowqty;
+			}
+			$_SESSION["NumCartItem"] = $qtycount;
+			/*$resultset = array();
+			while ($row = $result2->fetch_array($result2)){
+				$resultset[] = $row;
+			}
+			foreach ($resultset as $result2) {
+				$_SESSION["NumCartItem"] = $_SESSION["NumCartItem"] + $resultsetp["Quantity"];
+			}*/
+			//$_SESSION["NumCartItem"] = $result2->num_rows;
 		}
 
 		header("Location: index.php");
