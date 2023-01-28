@@ -49,7 +49,7 @@ function addItem() {
 	$stmt->execute();
 	$result = $stmt->get_result();
 	$stmt->close();
-	$addNewItem = 0;
+	$addNewItem = 1;
 	if ($result->num_rows > 0) {
 		$qry = "UPDATE ShopCartItem SET Quantity=LEAST(Quantity+?, 10)
 				WHERE ShopCartID=? AND ProductID=?";
@@ -94,10 +94,26 @@ function updateItem() {
 	$pid = $_POST["product_id"];
 	$quantity = $_POST["quantity"];
 	include_once("mysql_conn.php");
+
+	$qry = "SELECT Quantity FROM ShopCartItem Where ProductID=? AND ShopCartID=?";
+	$stmt = $conn->prepare($qry);
+	$stmt->bind_param("ii", $pid, $cartid);
+	$stmt->execute();
+	$result = $stmt->get_result();
+	$row = $result->fetch_assoc();
+	$dbqty = (int) $row['Quantity'];
+	if ($dbqty - $quantity > 0) {
+		$_SESSION["NumCartItem"] = $_SESSION["NumCartItem"] - ($dbqty - $quantity);
+	}
+	else{
+		$_SESSION["NumCartItem"] = $_SESSION["NumCartItem"] + ($quantity - $dbqty);
+	}
 	$qry = "UPDATE ShopCartItem SET Quantity=? WHERE ProductID=? AND ShopCartID=?";
 	$stmt = $conn->prepare($qry);
 	$stmt->bind_param("iii", $quantity, $pid, $cartid);
 	$stmt->execute();
+
+
 	$stmt->close();
 	$conn->close();
 	header ("Location: shoppingCart.php");
@@ -123,6 +139,7 @@ function removeItem() {
 	$stmt->execute();
 	$stmt->close();
 	$conn->close();
+	$_SESSION["NumCartItem"] = $_SESSION["NumCartItem"] - 1;
 	header ("Location: shoppingCart.php");
 	exit;
 }		
