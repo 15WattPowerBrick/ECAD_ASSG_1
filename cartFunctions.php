@@ -49,7 +49,8 @@ function addItem() {
 	$stmt->execute();
 	$result = $stmt->get_result();
 	$stmt->close();
-	$addNewItem = 1;
+	$addNewItem = 0;
+	$addqty = 0;
 	if ($result->num_rows > 0) {
 		$qry = "UPDATE ShopCartItem SET Quantity=LEAST(Quantity+?, 10)
 				WHERE ShopCartID=? AND ProductID=?";
@@ -57,6 +58,7 @@ function addItem() {
 		$stmt->bind_param("iii", $quantity, $_SESSION["Cart"], $pid);
 		$stmt->execute();
 		$stmt->close();
+		$addqty = $quantity;
 	}
 	else {
 		$qry = "INSERT INTO ShopCartItem(ShopCartID, ProductID, Price, Name, Quantity)
@@ -65,12 +67,12 @@ function addItem() {
 		$stmt->bind_param("iiii", $_SESSION["Cart"], $pid, $quantity, $pid);
 		$stmt->execute();
 		$stmt->close();
-		$addNewItem = 1;
+		$addNewItem = $quantity;
 	}
   	$conn->close();
   	// Update session variable used for counting number of items in the shopping cart.
 	if (isset($_SESSION["NumCartItem"])) {
-		$_SESSION["NumCartItem"] = $_SESSION["NumCartItem"] + $addNewItem;
+		$_SESSION["NumCartItem"] = $_SESSION["NumCartItem"] + $addNewItem + $addqty;
 	}
 	else {
 		$_SESSION["NumCartItem"] = 1;
@@ -129,17 +131,17 @@ function removeItem() {
 	// TO DO 3
 	// Write code to implement: if a user clicks on "Remove" button, update the database
 	// and also the session variable for counting number of items in shopping cart.
+	include_once("mysql_conn.php");
 	$cartid = $_SESSION["Cart"];
 	$pid = $_POST["product_id"];
 	$quantity = $_POST["quantity"];
-	include_once("mysql_conn.php");
+	$_SESSION["NumCartItem"] = $_SESSION["NumCartItem"] - $quantity;
 	$qry = "DELETE FROM ShopCartItem WHERE ProductID=? AND ShopCartID=?";
 	$stmt = $conn->prepare($qry);
 	$stmt->bind_param("ii", $pid, $cartid);
 	$stmt->execute();
 	$stmt->close();
 	$conn->close();
-	$_SESSION["NumCartItem"] = $_SESSION["NumCartItem"] - 1;
 	header ("Location: shoppingCart.php");
 	exit;
 }		
