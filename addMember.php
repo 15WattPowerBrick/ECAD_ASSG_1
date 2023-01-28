@@ -38,14 +38,16 @@ if ($boolean == FALSE)
         $result = $conn->query($qry);
         while($row = $result->fetch_array()){
             $_SESSION["ShopperID"] = $row["ShopperID"];
+            $shopperid = $row["ShopperID"];
         }
         $message = "Registration successful!
-                    Your ShopperID is $_SESSION[ShopperID]";
+                    Your ShopperID is $shopperid";
         echo '<script>
-        alert("Registration successful!");
+        alert("Registration successful! Your ShopperID is '.$shopperid.'");
         window.location.href="http://localhost/ECAD_ASSG_1/index.php";
         </script>';
         $_SESSION["ShopperName"] = $name;
+        $_SESSION["ShopperEmail"] = $email;
     }
     else {
         echo '<script>
