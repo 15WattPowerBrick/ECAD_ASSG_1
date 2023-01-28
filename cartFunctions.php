@@ -131,18 +131,27 @@ function removeItem() {
 	// TO DO 3
 	// Write code to implement: if a user clicks on "Remove" button, update the database
 	// and also the session variable for counting number of items in shopping cart.
-	include_once("mysql_conn.php");
-	$cartid = $_SESSION["Cart"];
-	$pid = $_POST["product_id"];
-	$quantity = $_POST["quantity"];
-	$_SESSION["NumCartItem"] = $_SESSION["NumCartItem"] - $quantity;
-	$qry = "DELETE FROM ShopCartItem WHERE ProductID=? AND ShopCartID=?";
-	$stmt = $conn->prepare($qry);
-	$stmt->bind_param("ii", $pid, $cartid);
-	$stmt->execute();
-	$stmt->close();
-	$conn->close();
-	header ("Location: shoppingCart.php");
-	exit;
+	if (isset($_POST['action'])) {
+		include_once("mysql_conn.php");
+		$cartid = $_SESSION["Cart"];
+		$pid = $_POST["product_id"];
+		$quantity = $_POST["quantity"];
+		$qry = "SELECT Quantity FROM ShopCartItem Where ProductID=? AND ShopCartID=?";
+		$stmt = $conn->prepare($qry);
+		$stmt->bind_param("ii", $pid, $cartid);
+		$stmt->execute();
+		$result = $stmt->get_result();
+		$row = $result->fetch_assoc();
+		$dbqty = (int) $row['Quantity'];
+		$_SESSION["NumCartItem"] = $_SESSION["NumCartItem"] - $dbqty;
+		$qry = "DELETE FROM ShopCartItem WHERE ProductID=? AND ShopCartID=?";
+		$stmt = $conn->prepare($qry);
+		$stmt->bind_param("ii", $pid, $cartid);
+		$stmt->execute();
+		$stmt->close();
+		$conn->close();
+		header ("Location: shoppingCart.php");
+		exit;
+	}
 }		
 ?>
