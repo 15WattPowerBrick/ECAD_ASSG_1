@@ -5,12 +5,12 @@ session_start();
 include("header.php");
 ?>
 <!-- Create a cenrally located container -->
-<div style="width:80%; margin: auto;">
+<div style="width:60%; margin: auto;">
 <!-- Create a HTML Form within the container -->
 <form action="checkLogin.php" method="post">
 <!-- 1st row - Header Row -->
 <div class="form-group row">
-<div class="col-sm-9 offset-sm-3">
+<div class="col-sm-9">
 <span class="page-title">Member Login</span>
 </div>
 </div>
@@ -38,7 +38,8 @@ name="password" id="password" required />
 <div class='form-group row'>
 <div class='col-sm-9 offset-sm-3'>
 <button class="btn btn-primary btn-sm" type='submit'>Login</button>
-<p>Please sign up if you do not have an account.</p>
+</br></br>
+<p>Please <a href="register.php">sign up</a> if you do not have an account.</p>
 <p><a href="forgetPassword.php">Forget Password</a></p>
 </div>
 </div>
