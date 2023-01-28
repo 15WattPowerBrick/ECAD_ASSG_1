@@ -24,7 +24,7 @@ if ($result->num_rows > 0){
 		$checkLogin = true;
 		$_SESSION["ShopperName"] = $row["Name"];
 		$_SESSION["ShopperID"] = $row["ShopperID"];
-
+		$_SESSION["ShopperEmail"] = $row["Email"];
 		// To Do 2 (Practical 4): Get active shopping cart
 		$qry = "SELECT sc.ShopCartID FROM ShopCart sc
 				INNER JOIN ShopCartItem sci ON sc.ShopCartID=sci.ShopCartID
