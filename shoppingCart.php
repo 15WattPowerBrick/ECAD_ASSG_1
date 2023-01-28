@@ -26,11 +26,15 @@ if (isset($_SESSION["Cart"])) {
 	if ($result->num_rows > 0) {
 		// To Do 2 (Practical 4): Format and display 
 		// the page header and header row of shopping cart page
-		echo "<p class='page-title' style='text-align:center'>Shopping Cart</p>"; 
+		echo "<div class='row justify-content-center'>";
+		echo "<div class='border shadow-lg p-3 mb-5 bg-white rounded d-flex flex-column'>";
+		echo "<p class='display-4' style='padding-left: 10px; padding-top: 10px;'>Shopping Cart</p>"; 
+		echo "<div class='d-flex flex-row>";
+		echo "<div class='col-auto>";
 		echo "<div class='table-responsive' >"; // Bootstrap responsive table
 		echo "<table class='table table-hover'>"; // Start of table
 		echo "<thead class ='cart-header'>";
-		echo "<tr>";
+		echo "<tr class='bg-white text-dark'>";
 		echo "<th width='250px'>Item</th>";
 		echo "<th width='90px'>Price (S$)</th>";
 		echo "<th width='60px'>Quantity</th>";
@@ -87,19 +91,32 @@ if (isset($_SESSION["Cart"])) {
 		}
 		echo "</tbody>"; // End of table's body section
 		echo "</table>"; // End of table
-		echo "</div>"; // End of Bootstrap responsive table
-		
+		echo "</div>";
 		// To Do 4 (Practical 4): 
 		// Display the subtotal at the end of the shopping cart
-		echo "<p style='text-align:right; font-size:20px'>
-				Subtotal = S$". number_format($subTotal, 2);
+		echo "<div class='row bg-info text-light' style='padding-left: 50px'>";
+		echo "<h3 class='text-align-top text-align-left' style='padding-top:20px;'>Payment Information</h3>";
+		//echo "<div class='col-auto w-75'>";
+		echo "<p style='text-align:left; padding-right:100px; font-size:20px'>
+				Subtotal: S$". number_format($subTotal, 2);
 		$_SESSION["SubTotal"] = round($subTotal, 2);
+		/*echo "<p style='text-align:right; font-size:20px'>
+		Delivery Fee = S$".  number_format($shipCharge, 2);
+		$_SESSION["ShipCharge"] = round($shipCharge, 2);
+		echo "</p>";*/
 		// To Do 7 (Practical 5):
 		// Add PayPal Checkout button on the shopping cart page
 			echo "<form method='post' action='checkoutProcess.php'>";
-			echo "<input type='image' style='float:right;'
+			echo "<input type='image' style='float:left; padding:30px;'
 					src='https://www.paypal.com/en_US/i/btn/btn_xpressCheckout.gif'>";
 			echo "<form></p>";
+			echo "</div>";
+			echo "</div>";
+			echo "</div>";
+		echo "</div>";
+		echo "</div>"; // End of Bootstrap responsive table
+		
+		
 	}
 	else {
 		echo "<h3 style='text-align:center; color:red;'>Empty shopping cart!</h3>";
