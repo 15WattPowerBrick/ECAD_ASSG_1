@@ -5,7 +5,7 @@ session_start();
 include("header.php");
 include_once("mysql_conn.php");
 
-$query = "SELECT * FROM Feedback";
+$query = "SELECT * FROM Feedback ORDER BY DateTimeCreated DESC";
 $results=$conn->query($query);
 
 echo '
