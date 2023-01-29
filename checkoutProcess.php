@@ -28,12 +28,11 @@ if($_POST) //Post Data received from Shopping cart page.
 	if (isset($_POST['shippingType'])) {
 		$shipType = $_POST['shippingType'];
 	}
-	else {
+	/*else {
 		$_SESSION["ErrorMessage"] = "Please add a shipping type!";
 		header("Location: shoppingCart.php"); //to redirect back to "shoppingCart.php"
 		exit();
-	}
-	echo '<script>alert($_SESSION["shippingType"])</script>';
+	}*/
 
 	if ($_SESSION["SubTotal"] > 200) {
 		$_SESSION["ShipCharge"] = 0;
@@ -135,7 +134,16 @@ if(isset($_GET["token"]) && isset($_GET["PayerID"]))
 		// End of To Do 5
 	
 		// To Do 2: Update shopcart table, close the shopping cart (OrderPlaced=1)
-		
+		$total = $_SESSION["SubTotal"] + $_SESSION["Tax"] + $_SESSION["ShipCharge"];
+		$qry = "UPDATE shopcart SET OrderPlaced=1, Quantity=?, SubTotal=?, ShipCharge=?, Tax =?, Total=? WHERE ShopCartID=?";
+		$stmt = $conn->prpare($qry);
+		// "i" - integer, "d" - double
+		$stmt->bind_param("iddddi", $_SESSION["NumCartItem"],
+						  $_SESSION["SubTotal"], $_SESSION["ShipCharge"],
+						  $_SESSION["Tax"], $total,
+						  $_SESSION["Cart"]);
+		$stmt->execute();
+		$stmt->close();
 		// End of To Do 2
 		
 		//We need to execute the "GetTransactionDetails" API Call at this point 
@@ -173,19 +181,30 @@ if(isset($_GET["token"]) && isset($_GET["PayerID"]))
 			
 			// To Do 3: Insert an Order record with shipping information
 			//          Get the Order ID and save it in session variable.
-			
+			$qry = "INSERT INTO orderdata (ShipName, ShipAddress, ShipCountry, ShipEmail, ShopCartID)
+					VALUES (?, ?, ?, ?, ?)"
+			$stmt = $conn->prepare($qry);
+			// "i" - integer, "d" - double
+			$stmt->bind_param("ssssi", $ShipName, $ShipAddress, $ShipCountry, $ShipEmail, $_SESSION["Cart"]);
+			$stmt->execute();
+			$stmt->close();
+			$qry = "SELECT LAST_INSERT_ID() AS OrderID";
+			$result = $conn->query($qry);
+			$row = $result->fetch_array();
+			$_SESSION["OrderID"] = $row["OrderID"]
 			// End of To Do 3
 				
 			$conn->close();
 				  
 			// To Do 4A: Reset the "Number of Items in Cart" session variable to zero.
-			
+			$_SESSION["NumCartItem"] = 0;
 	  		
 			// To Do 4B: Clear the session variable that contains Shopping Cart ID.
-			
+			unset($_SESSION["Cart"]);
 			
 			// To Do 4C: Redirect shopper to the order confirmed page.
-			
+			header("Location: orderConfirmed.php");
+			exit;
 		} 
 		else 
 		{
