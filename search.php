@@ -16,11 +16,7 @@ include("header.php"); // Include the Page Layout header
                 <input class="form-control" name="keywords" id="keywords" type="search" placeholder="Product"
                 value="<?php echo !empty($_GET["keywords"]) ? $_GET["keywords"] : ""; ?>" />
             </div> 
-            <!-- <div class="col-sm-3">
-                <button type="submit" class="btn btn-primary">Search</button>
-            </div> -->
         </div> <!-- End of 2nd row -->
-
         <div class="form-group row"> <!-- 3rd row -->
     <div class="col-sm-3">
         <div class="form-check">
@@ -30,9 +26,6 @@ include("header.php"); // Include the Page Layout header
         </div>
     </div>
 </div> <!-- End of 3rd row -->
-
-
-
         <div class="form-group row"> <!-- 4th row -->
             <div class="col-sm-4">
                 <input class="form-control" name="min_price" id="min_price" type="number" min='0' placeholder="Min. Price"
@@ -43,18 +36,13 @@ include("header.php"); // Include the Page Layout header
                 value="<?php echo !empty($_GET["max_price"]) ? $_GET["max_price"] : ""; ?>"/>
             </div>
         </div> <!-- End of 4th row -->
-
         <div class="form-group row"> <!-- 5th row -->
-            
             <div class="col-sm-3">
                 <button type="submit" class="btn btn-primary">Search</button>
             </div>
         </div> <!-- End of 5th row -->
     </form>
-
     <?php
-
-
     // The non-empty search keyword is sent to server
     if ((isset($_GET["keywords"]) && trim($_GET['keywords']) != "") || !empty($_GET["on_offer"]) ||  !empty($_GET["min_price"]) || !empty($_GET["max_price"])) {
 
@@ -79,7 +67,6 @@ include("header.php"); // Include the Page Layout header
             }
             
             if (!empty($_GET["min_price"])) {
-                //$qry .= " AND Price >= ".$_GET["min_price"]."";
                 if ($criteria == 1) {
                     $qry .= " AND ";
                 }
@@ -87,7 +74,6 @@ include("header.php"); // Include the Page Layout header
                 $criteria = 1;
             }
             if (!empty($_GET["max_price"])) {
-                //$qry .= " AND Price <= ".$_GET["max_price"]."";
                 if ($criteria == 1) {
                     $qry .= " AND ";
                 }
@@ -96,10 +82,6 @@ include("header.php"); // Include the Page Layout header
             }
             $qry .= " ORDER BY ProductTitle";
         
-        
-
-        // echo $qry;
-
         // To Do (DIY): Retrieve list of product records with "ProductTitle" 
         // contains the keyword entered by shopper, and display them in a table.
         $SearchText = "%" . $_GET["keywords"] . "%";
@@ -175,8 +157,6 @@ include("header.php"); // Include the Page Layout header
     </div>';
         }
         $conn->close();
-
-        // To Do (DIY): End of Code
     }
 
     echo "</div>"; // End of container
