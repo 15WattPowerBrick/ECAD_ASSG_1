@@ -25,10 +25,23 @@ if($_POST) //Post Data received from Shopping cart page.
 	$_SESSION['Tax'] = round($_SESSION['SubTotal']*0.07, 2);
 	
 	// To Do 1B: Compute Shipping charge
+	if (isset($_POST['shippingType'])) {
+		$shipType = $_POST['shippingType'];
+	}
+	else {
+		$_SESSION["ErrorMessage"] = "Please add a shipping type!";
+		header("Location: shoppingCart.php"); //to redirect back to "shoppingCart.php"
+		exit();
+	}
+	echo '<script>alert($_SESSION["shippingType"])</script>';
+
 	if ($_SESSION["SubTotal"] > 200) {
 		$_SESSION["ShipCharge"] = 0;
 	}
-	else{
+	else if ($shipType == "expressDelivery"){
+		$_SESSION["ShipCharge"] = 10;
+	}
+	else {
 		$_SESSION["ShipCharge"] = 5;
 	}
 	
