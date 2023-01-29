@@ -44,7 +44,7 @@ if ($boolean == FALSE)
                     Your ShopperID is $shopperid";
         echo '<script>
         alert("Registration successful! Your ShopperID is '.$shopperid.'");
-        window.location.href="http://localhost/ECAD_ASSG_1/index.php";
+        window.location = "index.php";
         </script>';
         $_SESSION["ShopperName"] = $name;
         $_SESSION["ShopperEmail"] = $email;
@@ -52,7 +52,7 @@ if ($boolean == FALSE)
     else {
         echo '<script>
         alert("Error inserting record");
-        window.location.href="http://localhost/ECAD_ASSG_1/register.php";
+        window.location = "register.php";
         </script>';
     }
 }
@@ -60,7 +60,7 @@ else
 {
     echo '<script>
         alert("Email exist in database!");
-        window.location.href="http://localhost/ECAD_ASSG_1/register.php";
+        window.location = "register.php";
         </script>';
 }
 $stmt->close();

@@ -4,7 +4,7 @@ session_start();
 // Include the Page Layout header
 include("header.php");
 ?>
-<!-- <img src="Images/happybabylanding.png" class="img-fluid" style="display:block; margin:auto;"/> -->
+<!-- Landing Page -->
 <div class="container px-4 px-lg-5">
     <!-- Heading Row-->
     <div class="row gx-4 gx-lg-5 align-items-center my-5">
@@ -21,7 +21,7 @@ include("header.php");
             <a class="btn btn-primary" href="search.php">Search for Products</a>
         </div>
     </div>
-    <!-- Call to Action-->
+    <!-- Display Offer Products -->
     <?php
     include_once("mysql_conn.php");
     $qry = "SELECT * FROM product WHERE Offered = 1

@@ -13,6 +13,7 @@
     <script src="js/bootstrap.min.js"></script>
     <!-- Site specific Cascading Stylesheet -->
     <link rel="stylesheet" href="css/site.css">
+    <link rel="stylesheet" href="css/feedback.css">
 </head>
 
 <body>

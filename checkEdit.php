@@ -36,7 +36,7 @@ if ($boolean == FALSE)
     $stmt->execute();
     echo '<script>
     alert("Update Successfully!");
-    window.location.href="http://localhost/ECAD_ASSG_1/index.php";
+    window.location = "index.php";
     </script>';
     $_SESSION["ShopperName"] = $name;
 }
@@ -44,7 +44,7 @@ else
 {
     echo '<script>
         alert("Email exist in database!");
-        window.location.href="http://localhost/ECAD_ASSG_1/editProfile.php";
+        window.location = "editProfile.php";
         </script>';
 }
 $stmt->close();
