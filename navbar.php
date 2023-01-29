@@ -62,6 +62,9 @@ if(isset($_SESSION["ShopperName"])) {
 <li class="nav-item" >
 <a class="nav-link" href="shoppingCart.php">Shopping Cart</a>
 </li>
+<li class="nav-item" >
+<a class="nav-link" href="feedback.php">Feedback</a>
+</li>
 </ul>
 <!-- Right-justified menu items -->
 <ul class="navbar-nav ml-auto">
