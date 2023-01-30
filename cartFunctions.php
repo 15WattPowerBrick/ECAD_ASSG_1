@@ -51,6 +51,7 @@ function addItem() {
 	$stmt->close();
 	$addNewItem = 0;
 	$addqty = 0;
+	$today = date("Y-m-d");
 	if ($result->num_rows > 0) {
 		$qry = "UPDATE ShopCartItem SET Quantity=LEAST(Quantity+?, 10)
 				WHERE ShopCartID=? AND ProductID=?";
@@ -61,10 +62,28 @@ function addItem() {
 		$addqty = $quantity;
 	}
 	else {
-		$qry = "INSERT INTO ShopCartItem(ShopCartID, ProductID, Price, Name, Quantity)
-				SELECT ?, ?, Price, ProductTitle, ? FROM Product WHERE ProductID=?";
-		$stmt = $conn->prepare($qry);
-		$stmt->bind_param("iiii", $_SESSION["Cart"], $pid, $quantity, $pid);
+		$price = 0;
+		$qry2 = "SELECT * FROM Product WHERE ProductID=?";
+		$stmt2 = $conn->prepare($qry2);
+		$stmt2->bind_param("i", $pid);
+		$stmt2->execute();
+		$result2 = $stmt2->get_result();
+		$stmt2->close();
+		$row2 = $result2->fetch_array();
+		if ($row2["Offered"] == 1 && $today >= $row2["OfferStartDate"] && $today <= $row2["OfferEndDate"]) {
+			//$price = $row2["OfferedPrice"];
+			$qry = "INSERT INTO ShopCartItem(ShopCartID, ProductID, Price, Name, Quantity)
+					SELECT ?, ?, OfferedPrice, ProductTitle, ? FROM Product WHERE ProductID=?";
+			$stmt = $conn->prepare($qry);
+			$stmt->bind_param("iiii", $_SESSION["Cart"], $pid, $quantity, $pid);
+		}
+		else{
+			//$price = $row2["Price"];
+			$qry = "INSERT INTO ShopCartItem(ShopCartID, ProductID, Price, Name, Quantity)
+					SELECT ?, ?, Price, ProductTitle, ? FROM Product WHERE ProductID=?";
+			$stmt = $conn->prepare($qry);
+			$stmt->bind_param("iiii", $_SESSION["Cart"], $pid, $quantity, $pid);
+		}
 		$stmt->execute();
 		$stmt->close();
 		$addNewItem = $quantity;
