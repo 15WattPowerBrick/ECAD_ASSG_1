@@ -37,7 +37,7 @@ if ($result->num_rows > 0) {
     $pwdanswer = $row["PwdAnswer"];
 }
 echo '
-<div style="width:80%; margin:auto;">
+<div style="width:80%; margin:auto; padding-bottom: 50px">
 <form name="register" action="checkEdit.php" method="post" 
       onsubmit="return validateForm()">
     <div class="form-group row">

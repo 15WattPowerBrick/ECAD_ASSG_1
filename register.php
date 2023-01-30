@@ -18,7 +18,7 @@ function validateForm()
 }
 </script>
 
-<div style="width:80%; margin:auto;">
+<div style="width:80%; margin:auto; padding-bottom: 50px">
 <form name="register" action="addMember.php" method="post" 
       onsubmit="return validateForm()">
     <div class="form-group row">
