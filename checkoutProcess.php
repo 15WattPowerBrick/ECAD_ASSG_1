@@ -37,7 +37,19 @@ if($_POST) //Post Data received from Shopping cart page.
 	}
 	
 	// To Do 1A: Compute GST amount 7% for Singapore, round the figure to 2 decimal places
-	$_SESSION['Tax'] = round($_SESSION['SubTotal']*0.07, 2);
+	$qry = "SELECT * FROM GST";
+	$stmt = $conn->prepare($qry);	
+	$stmt->execute();
+	$result = $stmt->get_result();
+	$stmt->close();
+	$today = date("Y-m-d");
+	$gst = 0.05;
+	while ($row = $result->fetch_array()) {
+		if ($today >= $row["EffectiveDate"]){
+			$gst = 0.01 * $row["TaxRate"];
+		}
+	}
+	$_SESSION['Tax'] = round($_SESSION['SubTotal']*$gst, 2);
 	
 	// To Do 1B: Compute Shipping charge
 	if (isset($_SESSION['shippingType'])) {
