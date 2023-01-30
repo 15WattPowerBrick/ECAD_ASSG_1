@@ -6,6 +6,19 @@ include_once("mysql_conn.php");
 
 if($_POST) //Post Data received from Shopping cart page.
 {
+	$qry = "SELECT * FROM Shopper WHERE ShopperID = ?";
+	$stmt = $conn->prepare($qry);
+	// "i" - integer, "d" - double
+	$stmt->bind_param("i", $_SESSION["ShopperID"]);
+	$stmt->execute();
+	$result = $stmt->get_result();
+	$row = $result->fetch_array();
+	if ($row["Country"] != "Singapore") {
+		$_SESSION["ErrorMessage"] = "Please ensure your shipping address is set to Singapore! You have your country set as ".$row["Country"].".";
+		header("Location: shoppingCart.php"); //to redirect back to "shoppingCart.php"
+		exit();
+	}
+	
 	// To Do 6 (DIY): Check to ensure each product item saved in the associative
 	//                array is not out of stock
 	foreach($_SESSION['Items'] as $item) 
