@@ -25,14 +25,14 @@ if($_POST) //Post Data received from Shopping cart page.
 	$_SESSION['Tax'] = round($_SESSION['SubTotal']*0.07, 2);
 	
 	// To Do 1B: Compute Shipping charge
-	if (isset($_POST['shippingType'])) {
-		$shipType = $_POST['shippingType'];
+	if (isset($_SESSION['shippingType'])) {
+		$shipType = $_SESSION["shippingType"];
 	}
-	/*else {
+	else {
 		$_SESSION["ErrorMessage"] = "Please add a shipping type!";
 		header("Location: shoppingCart.php"); //to redirect back to "shoppingCart.php"
 		exit();
-	}*/
+	}
 
 	if ($_SESSION["SubTotal"] > 200) {
 		$_SESSION["ShipCharge"] = 0;
@@ -55,7 +55,7 @@ if($_POST) //Post Data received from Shopping cart page.
 			  '&PAYMENTREQUEST_0_ITEMAMT='.urlencode($_SESSION["SubTotal"]). 
 			  '&PAYMENTREQUEST_0_SHIPPINGAMT='.urlencode($_SESSION["ShipCharge"]). 
 			  '&PAYMENTREQUEST_0_TAXAMT='.urlencode($_SESSION["Tax"]). 	
-			  '&BRANDNAME='.urlencode("Mamaya e-BookStore").
+			  '&BRANDNAME='.urlencode("HappyBaby").
 			  $paypal_data.				
 			  '&RETURNURL='.urlencode($PayPalReturnURL ).
 			  '&CANCELURL='.urlencode($PayPalCancelURL);	
@@ -136,7 +136,7 @@ if(isset($_GET["token"]) && isset($_GET["PayerID"]))
 		// To Do 2: Update shopcart table, close the shopping cart (OrderPlaced=1)
 		$total = $_SESSION["SubTotal"] + $_SESSION["Tax"] + $_SESSION["ShipCharge"];
 		$qry = "UPDATE shopcart SET OrderPlaced=1, Quantity=?, SubTotal=?, ShipCharge=?, Tax =?, Total=? WHERE ShopCartID=?";
-		$stmt = $conn->prpare($qry);
+		$stmt = $conn->prepare($qry);
 		// "i" - integer, "d" - double
 		$stmt->bind_param("iddddi", $_SESSION["NumCartItem"],
 						  $_SESSION["SubTotal"], $_SESSION["ShipCharge"],
@@ -182,7 +182,7 @@ if(isset($_GET["token"]) && isset($_GET["PayerID"]))
 			// To Do 3: Insert an Order record with shipping information
 			//          Get the Order ID and save it in session variable.
 			$qry = "INSERT INTO orderdata (ShipName, ShipAddress, ShipCountry, ShipEmail, ShopCartID)
-					VALUES (?, ?, ?, ?, ?)"
+					VALUES (?, ?, ?, ?, ?)";
 			$stmt = $conn->prepare($qry);
 			// "i" - integer, "d" - double
 			$stmt->bind_param("ssssi", $ShipName, $ShipAddress, $ShipCountry, $ShipEmail, $_SESSION["Cart"]);
@@ -191,7 +191,7 @@ if(isset($_GET["token"]) && isset($_GET["PayerID"]))
 			$qry = "SELECT LAST_INSERT_ID() AS OrderID";
 			$result = $conn->query($qry);
 			$row = $result->fetch_array();
-			$_SESSION["OrderID"] = $row["OrderID"]
+			$_SESSION["OrderID"] = $row["OrderID"];
 			// End of To Do 3
 				
 			$conn->close();
@@ -201,6 +201,7 @@ if(isset($_GET["token"]) && isset($_GET["PayerID"]))
 	  		
 			// To Do 4B: Clear the session variable that contains Shopping Cart ID.
 			unset($_SESSION["Cart"]);
+			unset($_SESSION["ErrorMessage"]);
 			
 			// To Do 4C: Redirect shopper to the order confirmed page.
 			header("Location: orderConfirmed.php");

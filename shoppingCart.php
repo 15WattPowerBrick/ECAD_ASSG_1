@@ -115,7 +115,7 @@ if (isset($_SESSION["Cart"])) {
 		// Display the subtotal at the end of the shopping cart
 		
 			echo "</div>";
-			echo "<div class='row bg-info text-light' style='padding-left: 50px'>";
+			echo "<div class='row bg-info text-light' style='padding-left: 50px;'>";
 		echo "<h3 class='text-align-top text-align-left' style='padding-top:20px;'>Payment Information</h3>";
 		//echo "<div class='col-auto w-75'>";
 
@@ -125,26 +125,34 @@ if (isset($_SESSION["Cart"])) {
 
 		// To Do 7 (Practical 5):
 		// Add PayPal Checkout button on the shopping cart page
+
+			if (! isset($_SESSION["shippingType"])) {
+				$_SESSION["shippingType"] = "normalDelivery";
+			}
+
+			if ($_SESSION["shippingType"] == "normalDelivery"){
+				if ($subTotal > 200) {
+					echo "<p><b>Selected: Normal Delivery (+$0)<br>(within 2 working days after an order is placed)</b><br><br></p>";
+					echo "<div style='width: 100%;'><form method='post' action='setExpressDelivery.php'><button type='submit' class='btn btn-primary' style='font-size: 14px'>Switch to Express Delivery (+$0)</button></form></div>";
+				}
+				else{
+					echo "<p><b>Selected: Normal Delivery (+$5)<br>(within 2 working days after an order is placed)</b><br><br></p>";
+					echo "<div style='width: 100%;'><form method='post' action='setExpressDelivery.php'><button type='submit' class='btn btn-primary' style='font-size: 14px'>Switch to Express Delivery (+$10)</button></form></div>";
+				}
+			}
+			else if($_SESSION["shippingType"] == "expressDelivery"){
+				if ($subTotal > 200) {
+					echo "<p><b>Selected: Express Delivery (+$0)<br>(delivered within 24 hours after an order is placed)</b><br><br></p>";
+					echo "<div style='width: 100%;'><form method='post' action='setNormalDelivery.php'><button type='submit' class='btn btn-primary' style='font-size: 14px'>Switch to Normal Delivery (+$0)</button></form></div>";
+				}
+				else{
+					echo "<p><b>Selected: Express Delivery (+$10)<br>(delivered within 24 hours after an order is placed)</b><br><br></p>";
+					echo "<div style='width: 100%;'><form method='post' action='setNormalDelivery.php'><button type='submit' class='btn btn-primary' style='font-size: 14px'>Switch to Normal Delivery (+$5)</button></form></div>";
+				}
+			}
+
 			echo "<form method='post' action='checkoutProcess.php'>";
 
-			echo "<div class='form-check' style='width: 100%;'>";
-			echo "<input class='form-check-input' type='radio' name='deliveryType' id='normalDelivery'>";
-			if ($subTotal > 200) {
-				echo "<label class='form-check-label' for='normalDelivery'>Normal Delivery (+$0)<br>(within 2 working days after an order is placed)</label>";
-			}
-			else{
-				echo "<label class='form-check-label' for='normalDelivery'>Normal Delivery (+$5)<br>(within 2 working days after an order is placed)</label>";
-			}
-			echo "</div>";
-			echo "<div class='form-check' style='width: 100%;'>";
-			echo "<input class='form-check-input' type='radio' name='deliveryType' id='expressDelivery'>";
-			if ($subTotal > 200) {
-				echo "<label class='form-check-label' for='expressDelivery'>Express Delivery (+$0)<br>”(delivered within 24 hours after an order is placed)</label>";
-			}
-			else{
-				echo "<label class='form-check-label' for='expressDelivery'>Express Delivery (+$10)<br>”(delivered within 24 hours after an order is placed)</label>";
-			}
-			echo "</div>";
 			if (isset($_SESSION["ErrorMessage"])) {
 				echo "<p style='font-weight: 600; margin-top: 10px; width: 100%'> Error: ". $_SESSION["ErrorMessage"];
 				echo "</p>";
@@ -170,4 +178,6 @@ else {
 }
 echo "</div>"; // End of container
 include("footer.php"); // Include the Page Layout footer
+
+unset($_SESSION["ErrorMessage"]);
 ?>
