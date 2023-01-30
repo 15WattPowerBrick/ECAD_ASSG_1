@@ -1,6 +1,6 @@
 </div> <!-- close the column in 3rd Row -->
 </div> <!-- close the 3rd Row -->
-<footer class="bg-primary text-white text-center text-lg-start" >
+<footer class="bg-primary text-white text-center text-lg-start fixed-bottom" >
     <!-- Email -->
     <div class="text-center p-3" style="background-color: #c0563d;  ">
         Need help? Drop us an email at:
