@@ -8,7 +8,22 @@ if($_POST) //Post Data received from Shopping cart page.
 {
 	// To Do 6 (DIY): Check to ensure each product item saved in the associative
 	//                array is not out of stock
-	
+	foreach($_SESSION['Items'] as $item) 
+	{
+		$qry = "SELECT * FROM Product WHERE ProductID = ?";
+		$stmt = $conn->prepare($qry);
+		// "i" - integer, "d" - double
+		$stmt->bind_param("i", $item["productId"]);
+		$stmt->execute();
+		$result = $stmt->get_result();
+		$row = $result->fetch_array();
+		if($row["Quantity"] < $item["quantity"]){
+			$_SESSION["ErrorMessage"] = $item["name"]." has a limited stock of ".$row["Quantity"].". Please change your order!!";
+			header("Location: shoppingCart.php"); //to redirect back to "shoppingCart.php"
+			exit();
+		}
+		$stmt->close();
+	}
 	// End of To Do 6
 	
 	$paypal_data = '';
@@ -28,11 +43,11 @@ if($_POST) //Post Data received from Shopping cart page.
 	if (isset($_POST['shippingType'])) {
 		$shipType = $_POST['shippingType'];
 	}
-	/*else {
+	else {
 		$_SESSION["ErrorMessage"] = "Please add a shipping type!";
 		header("Location: shoppingCart.php"); //to redirect back to "shoppingCart.php"
 		exit();
-	}*/
+	}
 
 	if ($_SESSION["SubTotal"] > 200) {
 		$_SESSION["ShipCharge"] = 0;
@@ -130,7 +145,15 @@ if(isset($_GET["token"]) && isset($_GET["PayerID"]))
 	{
 		// To Do 5 (DIY): Update stock inventory in product table 
 		//                after successful checkout
-		
+		foreach($_SESSION['Items'] as $item) 
+		{
+			$qry = "UPDATE Product SET Quantity = Quantity - ? WHERE ProductID = ?";
+			$stmt = $conn->prepare($qry);
+			// "i" - integer, "d" - double
+			$stmt->bind_param("di", $item["quantity"], $item["productId"]);
+			$stmt->execute();
+			$stmt->close();
+		}
 		// End of To Do 5
 	
 		// To Do 2: Update shopcart table, close the shopping cart (OrderPlaced=1)
@@ -182,7 +205,7 @@ if(isset($_GET["token"]) && isset($_GET["PayerID"]))
 			// To Do 3: Insert an Order record with shipping information
 			//          Get the Order ID and save it in session variable.
 			$qry = "INSERT INTO orderdata (ShipName, ShipAddress, ShipCountry, ShipEmail, ShopCartID)
-					VALUES (?, ?, ?, ?, ?)"
+					VALUES (?, ?, ?, ?, ?)";
 			$stmt = $conn->prepare($qry);
 			// "i" - integer, "d" - double
 			$stmt->bind_param("ssssi", $ShipName, $ShipAddress, $ShipCountry, $ShipEmail, $_SESSION["Cart"]);
@@ -191,7 +214,7 @@ if(isset($_GET["token"]) && isset($_GET["PayerID"]))
 			$qry = "SELECT LAST_INSERT_ID() AS OrderID";
 			$result = $conn->query($qry);
 			$row = $result->fetch_array();
-			$_SESSION["OrderID"] = $row["OrderID"]
+			$_SESSION["OrderID"] = $row["OrderID"];
 			// End of To Do 3
 				
 			$conn->close();
