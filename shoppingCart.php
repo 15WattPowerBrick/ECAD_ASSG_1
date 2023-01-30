@@ -113,9 +113,15 @@ if (isset($_SESSION["Cart"])) {
 		echo "</div>";
 		// To Do 4 (Practical 4): 
 		// Display the subtotal at the end of the shopping cart
-		echo "<div class='row bg-info text-light' style='padding-left: 50px'>";
+		
+			echo "</div>";
+			echo "<div class='row bg-info text-light' style='padding-left: 50px'>";
 		echo "<h3 class='text-align-top text-align-left' style='padding-top:20px;'>Payment Information</h3>";
 		//echo "<div class='col-auto w-75'>";
+
+		echo "<p style='text-align:left; width: 100%; font-size:20px'>
+				Subtotal: S$". number_format($subTotal, 2);
+		$_SESSION["SubTotal"] = round($subTotal, 2);	
 
 		echo "<div class='form-check' style='width: 100%;'>";
 		echo "<input class='form-check-input' type='radio' name='deliveryType' id='normalDelivery'>";
@@ -139,9 +145,8 @@ if (isset($_SESSION["Cart"])) {
 			echo "<p style='font-weight: 600; margin-top: 10px; width: 100%'> Error: ". $_SESSION["ErrorMessage"];
 			echo "</p>";
 		}
-
-		echo "<p style='text-align:left; width: 100%; font-size:20px'>
-				Subtotal: S$". number_format($subTotal, 2);
+		echo "<p style='text-align:left; width: 100%; font-size:30px; padding-top: 10px;'>
+				Total: S$". number_format($subTotal, 2);
 		$_SESSION["SubTotal"] = round($subTotal, 2);
 
 		// To Do 7 (Practical 5):
@@ -150,7 +155,6 @@ if (isset($_SESSION["Cart"])) {
 			echo "<input type='image' style='float:left; padding:30px;'
 					src='https://www.paypal.com/en_US/i/btn/btn_xpressCheckout.gif'>";
 			echo "</form></p>";
-			echo "</div>";
 			echo "</div>";
 			echo "</div>";
 		echo "</div>";
