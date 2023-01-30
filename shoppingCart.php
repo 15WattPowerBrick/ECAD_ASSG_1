@@ -45,15 +45,32 @@ if (isset($_SESSION["Cart"])) {
 		// To Do 5 (Practical 5):
 		// Declare an array to store the shopping cart items in session variable 
 		$_SESSION["Items"]=array();
+		$today = date("Y-m-d");
 		// To Do 3 (Practical 4): 
 		// Display the shopping cart content
 		$subTotal = 0; // Declare a variable to compute subtotal before tax
 		echo "<tbody>"; // Start of table's body section
 		while ($row = $result->fetch_array()) {
 			echo "<tr>";
-			echo "<td style='width:50%'>$row[Name]<br />";
-			echo "Product ID: $row[ProductID]</td>";
-			$formattedPrice = number_format($row["Price"], 2);
+			echo "<td style='width:50%'>$row[Name]";
+			echo "</td>";
+			//echo "Product ID: $row[ProductID]</td>";
+
+			$qry2 = "SELECT * FROM Product WHERE ProductID=?";
+			$stmt2 = $conn->prepare($qry2);
+			$stmt2->bind_param("i", $row["ProductID"]);
+			$stmt2->execute();
+			$result2 = $stmt2->get_result();
+			$stmt2->close();
+			$row2 = $result2->fetch_array();
+
+			if ($row2["Offered"] == 1 && $today >= $row2["OfferStartDate"] && $today <= $row2["OfferEndDate"]) {
+				$isOffered = 1;
+				$formattedPrice = number_format($row2["OfferedPrice"], 2);	
+			}
+			else{
+				$formattedPrice = number_format($row["Price"], 2);
+			}
 			echo "<td>$formattedPrice</td>";
 			echo "<td>";
 			echo "<form action='cartFunctions.php' method='post'>";
@@ -71,7 +88,9 @@ if (isset($_SESSION["Cart"])) {
 			echo "<input type='hidden' name='product_id' value='$row[ProductID]' />";
 			echo "</form>";
 			echo "</td>";
-			$formattedTotal = number_format($row["Total"], 2);
+			//$formattedTotal = number_format($row["Total"], 2);
+			$total = $row["Quantity"] * $formattedPrice;
+			$formattedTotal = number_format($total, 2);
 			echo "<td>$formattedTotal</td>";
 			echo "<td>"; // Column for remove item from shopping cart
 			echo "<form action='cartFunctions.php' method='post'>";
@@ -86,7 +105,7 @@ if (isset($_SESSION["Cart"])) {
 										"price"=>$row["Price"],
 										"quantity"=>$row["Quantity"]);
 			// Accumulate the running sub-total
-			$subTotal += $row["Total"];
+			$subTotal += $total;
 			
 		}
 		echo "</tbody>"; // End of table's body section
@@ -101,10 +120,7 @@ if (isset($_SESSION["Cart"])) {
 		echo "<p style='text-align:left; width: 100%; font-size:20px'>
 				Subtotal: S$". number_format($subTotal, 2);
 		$_SESSION["SubTotal"] = round($subTotal, 2);
-		/*echo "<p style='text-align:right; font-size:20px'>
-		Delivery Fee = S$".  number_format($shipCharge, 2);
-		$_SESSION["ShipCharge"] = round($shipCharge, 2);
-		echo "</p>";*/
+
 		// To Do 7 (Practical 5):
 		// Add PayPal Checkout button on the shopping cart page
 			echo "<form method='post' action='checkoutProcess.php'>";

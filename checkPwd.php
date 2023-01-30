@@ -19,14 +19,14 @@ if ($row["PwdAnswer"] == $pwdanswer)
 {
     echo '<script>
     alert("Your password is: '.$row["Password"].'");
-    window.location.href="http://localhost/ECAD_ASSG_1/login.php";
+    window.location = "login.php";
     </script>';
 }
 else
 {
     echo '<script>
         alert("Answer is wrong!");
-        window.location.href="http://localhost/ECAD_ASSG_1/forgetPassword.php";
+        window.location = "forgetPassword.php";
         </script>';
 }
 

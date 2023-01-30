@@ -77,6 +77,7 @@ include("header.php"); // Include the Page Layout header
         echo "<input type='hidden' name='action' value='add' />";
         echo "<input type='hidden' name='product_id' value='$pid' />";
 
+        //Add to cart button
         if ($stock <= 0) {
             echo "<button class='btn btn-outline-danger flex-shrink-0' type='submit' disabled>Out of Stock</button>";
         } else {

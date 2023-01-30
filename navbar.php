@@ -8,20 +8,14 @@ $content2 = "<li class='nav-item'>
 		     <a class='nav-link' href='login.php'>Login</a></li>";
 
 if(isset($_SESSION["ShopperName"])) { 
-	//To Do 1 (Practical 2) - 
-    //Display a greeting message, Change Password and logout links 
-    //after shopper has logged in.
-    //secho $_SESSION["ShopperName"];
-    //echo "Welcome ". $_SESSION["ShopperName"];
+
     $content1 = "Welcome ". $_SESSION["ShopperName"]; 
 
-	//$contentl = "Welcome <b>$_SESSION[ShopperName]</b>";
     $content2 = "<li class='nav-item'>
             <a class='nav-link' href='editProfile.php'>Edit Profile</a></li>
             <li class='nav-item'>
             <a class='nav-link' href='logout.php'>Logout</a></li>";
 
-	//To Do 2 (Practical 4) - 
     //Display number of item in cart
     if (isset($_SESSION["NumCartItem"])) {
         $content1 .= ", $_SESSION[NumCartItem] item(s) in shopping cart";
@@ -29,8 +23,7 @@ if(isset($_SESSION["ShopperName"])) {
 	
 }
 ?>
-<!-- To Do 3 (Practical 1) - 
-     Display a navbar which is visible before or after collapsing -->
+<!-- Display a navbar which is visible before or after collapsing -->
      <nav class="navbar navbar-expand-md navbar-dark" style="background-color: #c0563d;">
 <!-- Dynamic Text Display-->
 <span class="navbar-text ml-md-2"
@@ -44,8 +37,7 @@ if(isset($_SESSION["ShopperName"])) {
 </button>
 </nav>
 
-<!-- To Do 4 (Practical 1) - 
-     Define a collapsible navbar -->
+<!-- Define a collapsible navbar -->
      <nav class="navbar navbar-expand-md navbar-dark "style="background-color: #c0563d;">
 
 <!-- Collapsible part of navbar -->
@@ -61,6 +53,9 @@ if(isset($_SESSION["ShopperName"])) {
 </li>
 <li class="nav-item" >
 <a class="nav-link" href="shoppingCart.php">Shopping Cart</a>
+</li>
+<li class="nav-item" >
+<a class="nav-link" href="feedback.php">Feedback</a>
 </li>
 </ul>
 <!-- Right-justified menu items -->
