@@ -121,37 +121,35 @@ if (isset($_SESSION["Cart"])) {
 
 		echo "<p style='text-align:left; width: 100%; font-size:20px'>
 				Subtotal: S$". number_format($subTotal, 2);
-		$_SESSION["SubTotal"] = round($subTotal, 2);	
-
-		echo "<div class='form-check' style='width: 100%;'>";
-		echo "<input class='form-check-input' type='radio' name='deliveryType' id='normalDelivery'>";
-		if ($subTotal > 200) {
-			echo "<label class='form-check-label' for='normalDelivery'>Normal Delivery (+$0)<br>(within 2 working days after an order is placed)</label>";
-		}
-		else{
-			echo "<label class='form-check-label' for='normalDelivery'>Normal Delivery (+$5)<br>(within 2 working days after an order is placed)</label>";
-		}
-		echo "</div>";
-		echo "<div class='form-check' style='width: 100%;'>";
-		echo "<input class='form-check-input' type='radio' name='deliveryType' id='expressDelivery'>";
-		if ($subTotal > 200) {
-			echo "<label class='form-check-label' for='expressDelivery'>Express Delivery (+$0)<br>”(delivered within 24 hours after an order is placed)</label>";
-		}
-		else{
-			echo "<label class='form-check-label' for='expressDelivery'>Express Delivery (+$10)<br>”(delivered within 24 hours after an order is placed)</label>";
-		}
-		echo "</div>";
-		if (isset($_SESSION["ErrorMessage"])) {
-			echo "<p style='font-weight: 600; margin-top: 10px; width: 100%'> Error: ". $_SESSION["ErrorMessage"];
-			echo "</p>";
-		}
-		echo "<p style='text-align:left; width: 100%; font-size:30px; padding-top: 10px;'>
-				Total: S$". number_format($subTotal, 2);
 		$_SESSION["SubTotal"] = round($subTotal, 2);
 
 		// To Do 7 (Practical 5):
 		// Add PayPal Checkout button on the shopping cart page
 			echo "<form method='post' action='checkoutProcess.php'>";
+
+			echo "<div class='form-check' style='width: 100%;'>";
+			echo "<input class='form-check-input' type='radio' name='deliveryType' id='normalDelivery'>";
+			if ($subTotal > 200) {
+				echo "<label class='form-check-label' for='normalDelivery'>Normal Delivery (+$0)<br>(within 2 working days after an order is placed)</label>";
+			}
+			else{
+				echo "<label class='form-check-label' for='normalDelivery'>Normal Delivery (+$5)<br>(within 2 working days after an order is placed)</label>";
+			}
+			echo "</div>";
+			echo "<div class='form-check' style='width: 100%;'>";
+			echo "<input class='form-check-input' type='radio' name='deliveryType' id='expressDelivery'>";
+			if ($subTotal > 200) {
+				echo "<label class='form-check-label' for='expressDelivery'>Express Delivery (+$0)<br>”(delivered within 24 hours after an order is placed)</label>";
+			}
+			else{
+				echo "<label class='form-check-label' for='expressDelivery'>Express Delivery (+$10)<br>”(delivered within 24 hours after an order is placed)</label>";
+			}
+			echo "</div>";
+			if (isset($_SESSION["ErrorMessage"])) {
+				echo "<p style='font-weight: 600; margin-top: 10px; width: 100%'> Error: ". $_SESSION["ErrorMessage"];
+				echo "</p>";
+			}
+
 			echo "<input type='image' style='float:left; padding:30px;'
 					src='https://www.paypal.com/en_US/i/btn/btn_xpressCheckout.gif'>";
 			echo "</form></p>";
